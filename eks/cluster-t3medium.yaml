@@ -1,0 +1,17 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: dev-cluster
+  region: us-east-1
+
+iam:
+  serviceRoleARN: arn:aws:iam::993994359605:role/eksClusterRole
+
+nodeGroups:
+  - name: medium-ng
+    instanceType: t3.medium
+    desiredCapacity: 2
+    minSize: 1
+    maxSize: 3
+    volumeSize: 20
