@@ -120,3 +120,5 @@ Once the SPOC clusters are added, you can start deploying applications from the 
 ![alt text](images/argocdApplication.png)
 
 ![alt text](images/argocdspoc1.png)
+
+![alt text](images/guestbook.png)
