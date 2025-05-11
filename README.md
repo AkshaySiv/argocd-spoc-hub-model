@@ -122,3 +122,64 @@ Once the SPOC clusters are added, you can start deploying applications from the 
 ![alt text](images/argocdspoc1.png)
 
 ![alt text](images/guestbook.png)
+
+#### Deploy Applications Using ApplicationSet
+
+Instead of manually creating applications in the ArgoCD UI, you can use an **ApplicationSet** to automate the deployment of applications across multiple clusters. The **ApplicationSet** controller allows you to define a single configuration that dynamically generates ArgoCD applications for all target clusters.
+
+Here’s an example of an **ApplicationSet** configuration to deploy a sample application (e.g., `guestbook`) to all clusters:
+
+1. **Install the ApplicationSet Controller**:
+    Ensure the **ApplicationSet** controller is installed in your ArgoCD instance:
+    ```bash
+    kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj-labs/applicationset/stable/manifests/install.yaml
+    ```
+
+2. **Create an ApplicationSet Manifest**:
+    Save the following YAML configuration as `applicationset.yaml`:
+
+    ```yaml
+    apiVersion: argoproj.io/v1alpha1
+    kind: ApplicationSet
+    metadata:
+      name: guestbook-applicationset
+      namespace: argocd
+    spec:
+      generators:
+         - list:
+              elements:
+                 - cluster: spoc-cluster1
+                    url: https://<SPOC_CLUSTER1_API_SERVER>
+                 - cluster: spoc-cluster2
+                    url: https://<SPOC_CLUSTER2_API_SERVER>
+      template:
+         metadata:
+            name: guestbook-{{cluster}}
+         spec:
+            project: default
+            source:
+              repoURL: https://github.com/argoproj/argocd-example-apps.git
+              targetRevision: HEAD
+              path: guestbook
+            destination:
+              server: "{{url}}"
+              namespace: default
+    ```
+
+    Replace `<SPOC_CLUSTER1_API_SERVER>` and `<SPOC_CLUSTER2_API_SERVER>` with the API server URLs of the respective SPOC clusters.
+
+3. **Apply the ApplicationSet**:
+    Apply the manifest to create the ApplicationSet:
+    ```bash
+    kubectl apply -f applicationset.yaml
+    ```
+
+4. **Verify the Applications**:
+    Check that the applications are created and synchronized for each cluster:
+    ```bash
+    argocd app list
+    ```
+
+    You should see applications like `guestbook-spoc-cluster1` and `guestbook-spoc-cluster2` listed.
+
+Using **ApplicationSet**, you can easily manage deployments across multiple clusters without manually creating applications in the ArgoCD UI.
