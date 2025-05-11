@@ -115,3 +115,8 @@ To manage the **SPOC clusters** from the **hub cluster** using ArgoCD, follow th
     ![alt text](images/clusterList.png)
 
 Once the SPOC clusters are added, you can start deploying applications from the **hub cluster** to the **SPOC clusters** using ArgoCD.
+
+
+![alt text](images/argocdApplication.png)
+
+![alt text](images/argocdspoc1.png)
