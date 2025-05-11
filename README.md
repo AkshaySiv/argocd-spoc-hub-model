@@ -2,6 +2,38 @@
 
 This repository demonstrates the implementation of a **multi-cluster GitOps deployment model** using **ArgoCD** with a **centralized Single Point of Contact (SPOC) hub architecture**. The architecture involves a **hub cluster** and **two SPOC clusters**, all hosted on **AWS EKS**. This setup enables centralized management of ArgoCD applications across multiple Kubernetes clusters, ensuring streamlined operations, scalability, and visibility.
 
+
+## ✅ Concepts Covered
+
+### 1. Multi-Cluster GitOps
+- Applied GitOps principles across multiple Kubernetes clusters.
+- Leveraged Git as the single source of truth to drive infrastructure and application deployments.
+
+### 2. SPOC (Single Point of Contact) Hub Model
+- Implemented a centralized ArgoCD hub cluster to manage remote SPOC clusters.
+- Ensured streamlined application deployment and lifecycle management from a single control plane.
+
+### 3. ArgoCD Installation and Bootstrapping
+- Deployed ArgoCD in the hub cluster using official manifests.
+- Exposed ArgoCD for UI access and managed initial admin login and configuration.
+
+### 4. Cluster Registration
+- Added SPOC clusters to ArgoCD via `argocd cluster add` using proper kubeconfig contexts.
+- Enabled ArgoCD to push changes and sync apps to external clusters from the hub.
+
+### 5. Application Synchronization
+- Verified multi-cluster management using `argocd cluster list`.
+- Demonstrated seamless app syncing from Git to clusters through the ArgoCD UI and CLI.
+
+### 6. ApplicationSet Controller
+- Installed and configured the ApplicationSet controller.
+- Used a `List` generator to dynamically generate ArgoCD Applications targeting multiple clusters.
+- Automated multi-cluster app rollout with a single ApplicationSet definition.
+
+
+---
+
+
 ## Architecture Overview
 
 ![alt text](images/image.png)
